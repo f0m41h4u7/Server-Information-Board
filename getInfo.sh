@@ -1,14 +1,17 @@
 #!/bin/bash
 
 out_file_path=sysinfo.json
-server_address=http://localhost:1337/
+server_address=http://localhost:1337/ #DESTINATION ADDRESS
 
+#===================================HOSTNAME==========================================
 echo -e "{" >> $out_file_path
-echo -e "\t\"Hostname\": \""`hostname`"\"," >> $out_file_path
+echo -e "\t\"Hostname\": \""`hostname`"\"," >> $out_file_path 
 
+#====================================CPU==============================================
 echo -e "\t\"CPU Usage,%\": "`./cpu.sh`"," >> $out_file_path
 echo "Getting CPU info..."
 
+#===================================MEMORY============================================
 echo -e "\t\"RAM Info\": {" >> $out_file_path
 echo "Getting memory info.."
 echo -e "\t\t\"Memory(RAM) Info\": {" >> $out_file_path
@@ -24,6 +27,7 @@ echo -e "\t\t\t"`free -mht| awk '/Swap/{print " \"Free\": \"" $4 }'`"\"" >> $out
 echo -e "\t\t}"  >> $out_file_path
 echo -e "\t},"  >> $out_file_path
 
+#================================ROUTE TABLE==========================================
 echo -e "\t\"Route Table Info\": [" >> $out_file_path
 echo `route -n > tmp.out`
 echo "Getting route info..."
@@ -48,6 +52,7 @@ echo -e "\t\t}" >> $out_file_path
 echo -e "\t],"  >> $out_file_path
 sudo rm tmp.out
 
+#=============================DISK INFORMATION=========================================
 echo -e "\t\"Disk Info\": [" >> $out_file_path
 echo `df -h > tmp.out`
 echo "Getting disk info..."
@@ -70,6 +75,7 @@ echo -e "\t\t}" >> $out_file_path
 echo -e "\t],"  >> $out_file_path 
 sudo rm tmp.out
 
+#=============================RUNNING SERVICES========================================
 echo -e "\t\"Running Services\": {" >> $out_file_path
 echo `systemctl list-units | grep running|sort  > tmp.out`
 echo "Getting running services info..."
@@ -85,6 +91,7 @@ sudo rm tmp.out
 
 echo -e "\t\"Total Running service\": "`systemctl list-units | grep running|sort| wc -l`"," >> $out_file_path
 
+#=============================DOCKER CONTAINERS========================================
 echo -e "\t\"Docker Containers\": [ " >> $out_file_path
 echo `docker ps -a > tmp.out`
 echo "Getting docker containers info..."
@@ -110,6 +117,7 @@ echo -e "\t],"  >> $out_file_path
              
 sudo rm tmp.out
 
+#================================DOCKER IMAGES==========================================
 echo -e "\t\"Docker Images\": [" >> $out_file_path
 echo `docker image ls > tmp.out`
 echo "Getting docker images info..."
@@ -132,6 +140,7 @@ echo -e "\t\t}" >> $out_file_path
 echo -e "\t],"  >> $out_file_path
 sudo rm tmp.out
 
+#================================NGINX SITES==========================================
 echo -e "Getting NGINX info..."
 echo -e "\t\"NGINX Info\": {" >> $out_file_path
 echo -e "\t\t\"Status\": \""`systemctl status nginx | awk -F" " 'NR==3{print}' | cut -b 12-`"\"," >> $out_file_path
@@ -158,5 +167,6 @@ sudo rm tmp.out
 echo "Done!"
 echo -e "}"  >> $out_file_path
 
+#SENDING DATA TO DESTINATION SERVER
 echo -e "Sending data to server..."
 curl -X POST -d @'sysinfo.json' -H "Content-Type: application/json" $server_address -v
