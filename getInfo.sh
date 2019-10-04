@@ -1,6 +1,7 @@
 #!/bin/bash
 
 out_file_path=sysinfo.json
+server_address=http://localhost:1337/
 
 echo -e "{" >> $out_file_path
 echo -e "\t\"Hostname\": \""`hostname`"\"," >> $out_file_path
@@ -155,5 +156,7 @@ echo -e "\t}" >> $out_file_path
 sudo rm tmp.out
          
 echo "Done!"
-
 echo -e "}"  >> $out_file_path
+
+echo -e "Sending data to server..."
+curl -X POST -d @'sysinfo.json' -H "Content-Type: application/json" $server_address -v
