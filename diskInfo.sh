@@ -1,23 +1,40 @@
 #!/bin/bash
-out_file_path=sysinfo.json
 
-echo -e "\t\"Disk Info\": [" >> $out_file_path
-echo `df -h > tmp.out`
-n=0
-n=$(wc -l tmp.out | awk -F" " '{print $1}')
-for (( i=2; i <= n-1; i++ ))
-do
-        echo -e "\t\t{" >> $out_file_path
-        echo -e "\t\t\t\"Filesystem\": \""`df -h | awk -F" " 'NR=='$i'{print $1}'`"\"," >> $out_file_path
-        echo -e "\t\t\t\"Size\": \""`df -h | awk -F" " 'NR=='$i'{print $2}'`"\"," >> $out_file_path
-        echo -e "\t\t\t\"Used\": \""`df -h | awk -F" " 'NR=='$i'{print $3}'`"\"," >> $out_file_path
-        echo -e "\t\t\t\"Available\": \""`df -h | awk -F" " 'NR=='$i'{print $4}'`"\"," >> $out_file_path
-        echo -e "\t\t\t\"Use%\": \""`df -h | awk -F" " 'NR=='$i'{print $5}'`"\"," >> $out_file_path
-        echo -e "\t\t\t\"Mounted on\": \""`df -h | awk -F" " 'NR=='$i'{print $6}'`"\"" >> $out_file_path
-        if (( i<n-1 )); then
-                echo -e "\t\t}," >> $out_file_path
-        fi
-done
-echo -e "\t\t}" >> $out_file_path
-echo -e "\t],"  >> $out_file_path
-sudo rm tmp.out
+###############################################################################
+#getting information about disk into a variable; reading only 2nd 
+#line of the command output, bc 1st line contains only headers;
+##############################################################################
+function getDiskInfo
+{
+	local disk_patritions=$(df -h | tail -n +2)
+	local comma=""
+	cat >> sysinfo.json <<EOF
+        "Disk Info:"
+        [
+EOF
+
+	while read -r line; do
+        	local filesystem=$(echo $line | awk '{print $1}')
+		local size=$(echo $line | awk '{print $2}')
+        	local used=$(echo $line | awk '{print $3}')
+		local available=$(echo $line | awk '{print $4}')
+        	local use=$(echo $line | awk '{print $5}')
+		local mounted=$(echo $line | awk '{print $6}')
+	        cat >> sysinfo.json <<EOF
+		$comma
+                {       
+                        "Filesystem": "$filesystem",
+                        "Size": "$size",
+			"Used": "$used",
+			"Available": "$available",
+			"Use%": "$use",
+			"Mounted on": "$mounted"
+                }
+EOF
+		comma=","
+	done <<< "$disk_patritions"
+
+cat >> sysinfo.json <<EOF
+        ],
+EOF
+}
