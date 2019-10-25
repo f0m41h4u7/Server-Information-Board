@@ -9,7 +9,7 @@ function getServices
 	local processes=$(systemctl list-units | grep running| sort)
 	local comma=""
 	cat >> sysinfo.json <<EOF
-	"Running Services:"
+	"running-services:"
 	[
 EOF
 

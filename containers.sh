@@ -10,7 +10,7 @@ function getContainers
 	local containers=$(docker ps -a | tail -n +2)
 	local comma=""
 	cat >> sysinfo.json <<EOF
-        "Docker Containers:"
+        "docker-containers:"
         [
 EOF
 
@@ -25,13 +25,13 @@ EOF
         	cat >> sysinfo.json <<EOF
 		$comma
                 {       
-                        "Comtainer ID": "$id",
-                        "Image": "$image",
-                        "Command": $action,
-                        "Created": "$created",
-                        "Status": "$stat",
-                        "Ports": "$ports",
-                        "Name": "$name"
+                        "id": "$id",
+                        "image": "$image",
+                        "command": $action,
+                        "created": "$created",
+                        "status": "$stat",
+                        "ports": "$ports",
+                        "name": "$name"
 		}
 EOF
 	comma=","

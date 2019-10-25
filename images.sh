@@ -10,7 +10,7 @@ function getImages
 	local images=$(docker image ls | tail -n +2)
 
 cat >> sysinfo.json <<EOF
-        "Docker Images:"
+        "docker-images:"
         [
 EOF
 	local comma=""
@@ -25,11 +25,11 @@ EOF
 	        cat >> sysinfo.json <<EOF  
         	$comma
                 {       
-                        "Repository": "$repo",
-                        "Tag": "$tag",
-                        "Image ID": "$id",
-                        "Created": "$created",
-                        "Size": "$size"
+                        "repository": "$repo",
+                        "tag": "$tag",
+                        "id": "$id",
+                        "created": "$created",
+                        "size": "$size"
                 }
 EOF
 		comma=","

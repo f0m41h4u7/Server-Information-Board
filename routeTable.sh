@@ -9,7 +9,7 @@ function getRoute
 	local route_table=$(route -n | tail -n +3)
 	local comma=""
 cat >> sysinfo.json <<EOF
-	"Route Table Info:"
+	"route-table:"
         [
 EOF
 
@@ -26,14 +26,14 @@ EOF
 	        cat >> sysinfo.json <<EOF
 		$comma
                 {       
-                        "Destination": "$destination",
-                        "Gateway": "$gateway",
-                        "Genmask": "$genmask",
-                        "Flags": "$flags",
-                        "Metric": "$metric",
-                        "Ref": "$ref"
-			"Use": "$use"
-			"Iface": "$iface"
+                        "destination": "$destination",
+                        "gateway": "$gateway",
+                        "genmask": "$genmask",
+                        "flags": "$flags",
+                        "metric": "$metric",
+                        "ref": "$ref"
+			"use": "$use"
+			"iface": "$iface"
                 }
 EOF
 		comma=","

@@ -1,0 +1,305 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Devops Monitor API",
+    "description": "API to backend server"
+  },
+  "servers": [
+    {
+      "url": "{apiRoot}/monitor/v1",
+      "variables": {
+        "apiRoot": {
+          "default": "https://example.com"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/server-data": {
+      "post": {
+        "summary": "Deliver server data",
+        "operationId": "pushData",
+        "parameters": [
+          {
+            "name": "server-name",
+            "in": "query",
+            "description": "Server name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServerData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Expected result"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ServerData": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string"
+          },
+          "cpu-usage": {
+            "type": "number"
+          },
+          "memory-usage": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "string"
+              },
+              "used": {
+                "type": "string"
+              },
+              "free": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "total",
+              "used",
+              "free"
+            ]
+          },
+          "disk-info": {
+            "$ref": "#/components/schemas/DiskInfo"
+          },
+          "route-table": {
+            "$ref": "#/components/schemas/RouteTable"
+          },
+          "running-services": {
+            "$ref": "#/components/schemas/Services"
+          },
+          "docker-containers": {
+            "$ref": "#/components/schemas/Containers"
+          },
+          "docker-images": {
+            "$ref": "#/components/schemas/Images"
+          },
+          "nginx-info": {
+            "$ref": "#/components/schemas/NginxInfo"
+          }
+        },
+        "required": [
+          "hostname",
+          "cpu-usage",
+          "memory-usage",
+          "disk-info"
+        ]
+      },
+      "DiskInfo": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "fs": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
+            "used": {
+              "type": "string"
+            },
+            "available": {
+              "type": "string"
+            },
+            "use": {
+              "type": "string"
+            },
+            "mounted-on": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "fs",
+            "size",
+            "used",
+            "available",
+            "use",
+            "mounted-on"
+          ]
+        }
+      },
+      "RouteTable": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "destination": {
+              "type": "string"
+            },
+            "gateway": {
+              "type": "string"
+            },
+            "genmask": {
+              "type": "string"
+            },
+            "flags": {
+              "type": "string"
+            },
+            "metric": {
+              "type": "string"
+            },
+            "ref": {
+              "type": "string"
+            },
+            "use": {
+              "type": "string"
+            },
+            "iface": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "destination",
+            "gateway",
+            "genmask",
+            "flags",
+            "metric",
+            "ref",
+            "use",
+            "iface"
+          ]
+        }
+      },
+      "Services": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "unit": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "unit",
+            "status"
+          ]
+        }
+      },
+      "Containers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            },
+            "command": {
+              "type": "string"
+            },
+            "created": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "ports": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "image",
+            "command",
+            "created",
+            "status",
+            "ports",
+            "name"
+          ]
+        }
+      },
+      "Images": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "repository": {
+              "type": "string"
+            },
+            "tag": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "created": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "repository",
+            "tag",
+            "id",
+            "created",
+            "size"
+          ]
+        }
+      },
+      "NginxInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "process": {
+            "type": "string"
+          },
+          "sites": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "server-name": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "server-name",
+                "port"
+              ]
+            }
+          }
+        },
+        "required": [
+          "status",
+          "process",
+          "sites"
+        ]
+      }
+    }
+  }
+}

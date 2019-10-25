@@ -12,11 +12,11 @@ function getNGINX
 	local proc=$(echo $nginxinf | awk 'NR==5{print}' | cut -b 12-) #getting name of running process
 
 cat >> sysinfo.json <<EOF
-        "NGINX Info:"
+        "nginx-info:"
 	{
-		"Status": "$stat",
-		"Process": "$proc",
-		"Sites":
+		"status": "$stat",
+		"process": "$proc",
+		"sites":
 		[
 EOF
 
@@ -29,8 +29,8 @@ EOF
         	cat >> sysinfo.json <<EOF
 			$comma
                 	{       
-                        	"Server Name": "$name",
-                        	"Port": "$port"
+                        	"server-name": "$name",
+                        	"port": "$port"
                 	} 
 EOF
 		comma=","

@@ -12,8 +12,8 @@ source nginxInfo.sh
 
 cat > sysinfo.json <<EOF
 {
-        "Hostname": "$(hostname)",
-	"CPU Usage": $(./cpu.sh),
+        "hostname": "$(hostname)",
+	"cpu-usage": $(./cpu.sh),
 EOF
 
 getRAM
