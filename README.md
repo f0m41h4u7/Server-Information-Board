@@ -3,7 +3,7 @@
 Collects data from local server and sends it to example.com
 
 Server must respond with status 204. 
-The server side can be generated from `openapi.json`
+OpenAPI spec: `openapi.json`
 
 ### Installing
 
@@ -22,4 +22,4 @@ SHELL=/bin/bash
 
 */1 * * * * /opt/mon/mon.sh http://example.com/server-data?server-name=abc.com
 ```
-In this example the data is being collected every 1 minute.
+In this example the data is being collected every 1 minute, and you can change the time interval
