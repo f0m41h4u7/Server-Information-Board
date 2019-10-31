@@ -5,11 +5,6 @@ Collects data from local server and sends it to example.com
 Server must respond with status 204. 
 The server side can be generated from `openapi.json`
 
-```shell
-./begin.sh -t 60 -a http://example.com/monitor/v1/server-data?server-name=abc.com
-```
-Help: `./begin.sh -h`
-
 ### Installing
 
 1. Download all the scripts .sh and put them into /opt/mon
