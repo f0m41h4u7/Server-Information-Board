@@ -9,7 +9,7 @@ function getDiskInfo
 	local disk_patritions=$(df -h | tail -n +2)
 	local comma=""
 	cat >> sysinfo.json <<EOF
-        "disk-info:"
+        "disk-info":
         [
 EOF
 

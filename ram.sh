@@ -12,7 +12,7 @@ function getRAM
 	local used=$(echo $memory | awk '{print $3}')
 	local free=$(echo $memory | awk '{print $4}')
 	cat >> sysinfo.json <<EOF
-        "memory-usage:"
+        "memory-usage":
         {
 		"total": "$total",
 		"used": "$used",
