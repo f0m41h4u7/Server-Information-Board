@@ -22,4 +22,4 @@ SHELL=/bin/bash
 
 */1 * * * * /opt/mon/mon.sh http://example.com/server-data?server-name=abc.com
 ```
-In this example the data is being collected every 1 minute, and you can change the time interval
+In this example the data is being collected every 1 minute, but you can set any other time interval.
