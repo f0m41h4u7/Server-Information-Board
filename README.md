@@ -7,15 +7,35 @@ OpenAPI spec: `openapi.json`
 
 ### Installing
 
-1. Download all the scripts .sh and put them into /opt/mon
+1. Download mon-1-0.src.rpm
 
-2. Run:
+2. If you use CentOS/RHEL, run:
+
+```shell
+sudo rpm –i mon-1-0.src.rpm
+```
+
+If you use Ubuntu/Debian, run:
+
+```shell
+sudo apt-get install alien dpkg-dev debhelper build-essential
+```
+
+```shell
+sudo alien mon-1-0.src.rpm
+```
+
+```shell
+sudo dpkg -i mon-1-0.src.deb
+```
+
+3. Run:
 
 ```shell
 sudo crontab -e 
 ```
 
-3. Write into your crontab file:
+4. Write into your crontab file:
 
 ```shell
 SHELL=/bin/bash
